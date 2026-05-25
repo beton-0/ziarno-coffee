@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { useState } from "react";
+import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
 import { useLang } from "@/hooks/useLanguage";
 import { dict, type Lang } from "@/lib/i18n";
 import { LangSwitch } from "./ui/LangSwitch";
@@ -15,14 +15,33 @@ const NAV_ITEMS = [
   { key: "contact", href: "#contact" },
 ] as const;
 
+const SECTION_IDS = NAV_ITEMS.map((i) => i.key);
+
 export function Nav() {
   const { lang } = useLang();
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
 
   useMotionValueEvent(scrollY, "change", (v) => {
     setScrolled(v > 100);
   });
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        });
+      },
+      { threshold: 0.3, rootMargin: "-10% 0px -50% 0px" },
+    );
+    SECTION_IDS.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <motion.header
@@ -64,6 +83,24 @@ export function Nav() {
           </a>
         </div>
       </nav>
+
+      {/* Mobile floating section pill */}
+      <AnimatePresence>
+        {activeSection && (
+          <motion.div
+            key={activeSection}
+            className="fixed bottom-7 left-1/2 -translate-x-1/2 md:hidden z-40 pointer-events-none"
+            initial={{ opacity: 0, y: 8, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="bg-ink/80 backdrop-blur-md text-cream text-[10px] uppercase tracking-[0.25em] font-mono px-5 py-2.5 rounded-full border border-cream/10 whitespace-nowrap">
+              {dict.nav[activeSection as keyof typeof dict.nav]?.[lang]}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }
