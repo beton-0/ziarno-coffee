@@ -102,18 +102,19 @@ export function Nav() {
         )}
       </AnimatePresence>
 
-      {/* Mobile back-to-top button */}
+      {/* Mobile back-to-top pill */}
       <AnimatePresence>
         {scrolled && (
           <motion.a
             href="#top"
-            className="fixed bottom-7 right-5 md:hidden z-40 w-10 h-10 rounded-full bg-ink/80 backdrop-blur-md border border-cream/15 flex items-center justify-center text-cream/70 hover:text-cream transition-colors"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
+            className="fixed md:hidden z-40 bg-ink/80 backdrop-blur-md text-cream text-[10px] uppercase tracking-[0.25em] font-mono px-4 py-2.5 rounded-full border border-cream/10 whitespace-nowrap"
+            style={{ bottom: "calc(1.75rem + env(safe-area-inset-bottom, 0px))", right: "1.25rem" }}
+            initial={{ opacity: 0, y: 8, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.95 }}
             transition={{ duration: 0.25 }}
           >
-            ↑
+            ↑ {lang === "pl" ? "góra" : "top"}
           </motion.a>
         )}
       </AnimatePresence>
