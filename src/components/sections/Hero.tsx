@@ -62,6 +62,7 @@ export function Hero() {
         loop
         playsInline
         preload="auto"
+        poster="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1920&q=85&auto=format&fit=crop"
         className="absolute inset-0 w-full h-full object-cover hidden md:block"
       >
         <source src="/hero-coffee.mp4" type="video/mp4" />
