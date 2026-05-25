@@ -25,7 +25,12 @@ export function Preloader() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = done ? "" : "hidden";
+    if (done) {
+      window.scrollTo({ top: 0, behavior: "instant" });
+      document.body.style.overflow = "";
+    } else {
+      document.body.style.overflow = "hidden";
+    }
   }, [done]);
 
   // cup dimensions
