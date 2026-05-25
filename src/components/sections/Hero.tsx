@@ -10,6 +10,7 @@ export function Hero() {
   const words = dict.hero.rotating[lang];
   const [idx, setIdx] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoVisible, setVideoVisible] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => setIdx((i) => (i + 1) % words.length), 2600);
@@ -19,13 +20,12 @@ export function Hero() {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    const setRate = () => { video.playbackRate = 0.5; };
-    video.addEventListener("loadedmetadata", setRate);
-    video.addEventListener("canplay", setRate);
-    return () => {
-      video.removeEventListener("loadedmetadata", setRate);
-      video.removeEventListener("canplay", setRate);
+    const onCanPlay = () => {
+      video.playbackRate = 0.5;
+      video.play().then(() => setVideoVisible(true)).catch(() => {});
     };
+    video.addEventListener("canplay", onCanPlay);
+    return () => video.removeEventListener("canplay", onCanPlay);
   }, []);
 
   return (
@@ -39,15 +39,15 @@ export function Hero() {
         }}
       />
 
-      {/* Video — desktop only, plays on top of background image */}
+      {/* Video — desktop only, fades in when ready */}
       <video
         ref={videoRef}
-        autoPlay
         muted
         loop
         playsInline
         preload="auto"
-        className="absolute inset-0 w-full h-full object-cover hidden md:block"
+        className="absolute inset-0 w-full h-full object-cover hidden md:block transition-opacity duration-[1500ms]"
+        style={{ opacity: videoVisible ? 1 : 0 }}
       >
         <source src="/hero-coffee.mp4" type="video/mp4" />
       </video>
