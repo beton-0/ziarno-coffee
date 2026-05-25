@@ -62,12 +62,20 @@ export function Contact() {
               </a>
             </FadeIn>
 
+            <FadeIn delay={0.55} className="space-y-2">
+              <div className="text-[10px] uppercase tracking-[0.3em] text-ink/40 font-mono">
+                {lang === "pl" ? "Telefon" : "Phone"}
+              </div>
+              <a href="tel:+493012345678" className="text-2xl md:text-3xl font-display hover:text-roast transition-colors">
+                +49 30 123 456 78
+              </a>
+            </FadeIn>
+
             <FadeIn delay={0.6}>
               <div className="pt-8 border-t border-ink/15 flex gap-6">
                 {[
                   { name: "Instagram", href: "https://instagram.com" },
                   { name: "Spotify", href: "https://spotify.com" },
-                  { name: "Are.na", href: "https://are.na" },
                 ].map((s) => (
                   <a
                     key={s.name}
