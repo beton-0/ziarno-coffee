@@ -54,14 +54,14 @@ export function Nav() {
           scrolled ? "bg-cream/85 backdrop-blur-md border-b border-ink/8" : "bg-transparent",
         )}
       >
-        <nav className="mx-auto max-w-[1600px] px-6 md:px-10 h-20 flex items-center justify-between">
-          <a href="#top" className="group flex items-center gap-2">
+        <nav className="mx-auto max-w-[1600px] px-6 md:px-10 h-20 flex md:grid md:grid-cols-3 items-center justify-between">
+          <a href="#top" className="group flex items-center gap-2 md:justify-self-start">
             <span className={cn("font-display text-2xl tracking-tight transition-colors", scrolled ? "text-ink" : "text-cream")}>
               Ziarno<span className="text-roast">.</span>
             </span>
           </a>
 
-          <ul className="hidden md:flex items-center gap-1">
+          <ul className="hidden md:flex items-center gap-1 md:justify-self-center">
             {NAV_ITEMS.map((item) => (
               <li key={item.key}>
                 <NavLink href={item.href} label={dict.nav[item.key as keyof typeof dict.nav][lang as Lang]} inverted={!scrolled} />
@@ -69,7 +69,7 @@ export function Nav() {
             ))}
           </ul>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6 md:justify-self-end">
             <LangSwitch inverted={!scrolled} />
             <a
               href="#contact"
