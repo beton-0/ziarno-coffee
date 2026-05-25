@@ -45,6 +45,16 @@ export function Hero() {
 
   return (
     <section id="top" className="relative h-[100svh] w-full overflow-hidden bg-ink text-cream">
+      {/* Static image — mobile only */}
+      <div
+        className="absolute inset-0 md:hidden bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url(https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1200&q=85&auto=format&fit=crop)",
+        }}
+      />
+
+      {/* Video — desktop only */}
       <video
         ref={videoRef}
         autoPlay
@@ -52,7 +62,7 @@ export function Hero() {
         loop
         playsInline
         preload="auto"
-        className="absolute inset-0 w-full h-full object-contain md:object-cover"
+        className="absolute inset-0 w-full h-full object-cover hidden md:block"
       >
         <source src="/hero-coffee.mp4" type="video/mp4" />
       </video>
@@ -61,7 +71,7 @@ export function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-ink/40 via-transparent to-ink/80" />
       <div className="absolute inset-0 grain" />
 
-      <div className="relative h-full mx-auto max-w-[1600px] px-6 md:px-10 flex flex-col justify-between pt-32 pb-12">
+      <div className="relative h-full mx-auto max-w-[1600px] px-6 md:px-10 flex flex-col justify-between pt-32 pb-24 md:pb-12">
         <motion.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -135,7 +145,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.4, duration: 1 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-[10px] uppercase tracking-[0.3em] text-cream/50 font-mono"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-3 text-[10px] uppercase tracking-[0.3em] text-cream/50 font-mono"
         >
           <span>{dict.hero.scroll[lang]}</span>
           <motion.span
