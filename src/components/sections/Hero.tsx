@@ -35,7 +35,7 @@ export function Hero() {
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage:
-            "url(https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1920&q=85&auto=format&fit=crop)",
+            "url(https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1600&q=70&auto=format&fit=crop)",
         }}
       />
 

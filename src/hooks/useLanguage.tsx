@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, ReactNode } from "react";
 import type { Lang } from "@/lib/i18n";
 
 type Ctx = { lang: Lang; setLang: (l: Lang) => void; toggle: () => void };
@@ -15,14 +15,22 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     if (stored === "pl" || stored === "en") setLangState(stored);
   }, []);
 
-  const setLang = (l: Lang) => {
+  const setLang = useCallback((l: Lang) => {
     setLangState(l);
     if (typeof window !== "undefined") localStorage.setItem("ziarno-lang", l);
-  };
+  }, []);
 
-  const toggle = () => setLang(lang === "pl" ? "en" : "pl");
+  const toggle = useCallback(() => {
+    setLangState((current) => {
+      const next = current === "pl" ? "en" : "pl";
+      if (typeof window !== "undefined") localStorage.setItem("ziarno-lang", next);
+      return next;
+    });
+  }, []);
 
-  return <LanguageContext.Provider value={{ lang, setLang, toggle }}>{children}</LanguageContext.Provider>;
+  const value = useMemo(() => ({ lang, setLang, toggle }), [lang, setLang, toggle]);
+
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 }
 
 export function useLang() {

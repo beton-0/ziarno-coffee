@@ -10,7 +10,7 @@ export function Preloader() {
 
   useEffect(() => {
     const start = Date.now();
-    const duration = 2000;
+    const duration = 1200;
     let raf: number;
 
     const tick = () => {
@@ -18,7 +18,7 @@ export function Preloader() {
       const p = Math.min(elapsed / duration, 1);
       setProgress(p);
       if (p < 1) raf = requestAnimationFrame(tick);
-      else setTimeout(() => setDone(true), 400);
+      else setTimeout(() => setDone(true), 200);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
@@ -47,7 +47,7 @@ export function Preloader() {
           className="fixed inset-0 z-[100] flex items-center justify-center bg-ink"
           initial={{ y: 0 }}
           exit={{ y: "-100%" }}
-          transition={{ duration: 1.1, ease: [0.87, 0, 0.13, 1] }}
+          transition={{ duration: 0.7, ease: [0.87, 0, 0.13, 1] }}
         >
           <div className="flex flex-col items-center gap-10">
             <svg width="120" height="160" viewBox="0 0 120 160">
