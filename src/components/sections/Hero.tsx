@@ -30,16 +30,16 @@ export function Hero() {
 
   return (
     <section id="top" className="relative h-[100svh] w-full overflow-hidden bg-ink text-cream">
-      {/* Static image — mobile only */}
+      {/* Background image — always visible, acts as fallback under video */}
       <div
-        className="absolute inset-0 md:hidden bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage:
-            "url(https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1200&q=85&auto=format&fit=crop)",
+            "url(https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1920&q=85&auto=format&fit=crop)",
         }}
       />
 
-      {/* Video — desktop only */}
+      {/* Video — desktop only, plays on top of background image */}
       <video
         ref={videoRef}
         autoPlay
@@ -47,7 +47,6 @@ export function Hero() {
         loop
         playsInline
         preload="auto"
-        poster="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1920&q=85&auto=format&fit=crop"
         className="absolute inset-0 w-full h-full object-cover hidden md:block"
       >
         <source src="/hero-coffee.mp4" type="video/mp4" />
