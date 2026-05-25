@@ -3,6 +3,7 @@ import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/hooks/useLanguage";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const fraunces = Fraunces({
   subsets: ["latin", "latin-ext"],
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-cream text-ink antialiased">
         <LanguageProvider>{children}</LanguageProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
