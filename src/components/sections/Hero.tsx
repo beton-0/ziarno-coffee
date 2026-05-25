@@ -17,9 +17,22 @@ export function Hero() {
   }, [words.length]);
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 0.5;
-    }
+    const video = videoRef.current;
+    if (!video) return;
+    const handleReady = () => {
+      video.playbackRate = 0.5;
+      video.currentTime = 2;
+    };
+    const handleEnded = () => {
+      video.currentTime = 2;
+      video.play();
+    };
+    video.addEventListener("loadeddata", handleReady);
+    video.addEventListener("ended", handleEnded);
+    return () => {
+      video.removeEventListener("loadeddata", handleReady);
+      video.removeEventListener("ended", handleEnded);
+    };
   }, []);
 
   return (
@@ -28,13 +41,9 @@ export function Hero() {
         ref={videoRef}
         autoPlay
         muted
-        loop
         playsInline
         preload="auto"
         className="absolute inset-0 w-full h-full object-cover"
-        onLoadedData={() => {
-          if (videoRef.current) videoRef.current.playbackRate = 0.5;
-        }}
       >
         <source src="/hero-coffee.mp4" type="video/mp4" />
       </video>
