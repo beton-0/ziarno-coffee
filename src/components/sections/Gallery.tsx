@@ -26,7 +26,7 @@ export function Gallery() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 items-start">
           {galleryImages.map((img, i) => (
             <ParallaxImage key={img.src} src={img.src} alt={img.alt} tall={img.h === "tall"} index={i} />
           ))}
@@ -49,7 +49,7 @@ function ParallaxImage({ src, alt, tall, index }: { src: string; alt: string; ta
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-10%" }}
       transition={{ duration: 0.9, delay: offset * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      className={`relative overflow-hidden rounded-sm bg-ink ${tall ? "row-span-2 aspect-[3/5]" : "aspect-[4/5]"} ${
+      className={`relative overflow-hidden rounded-sm bg-ink ${tall ? "aspect-[4/5] md:row-span-2 md:aspect-[3/5]" : "aspect-[4/5]"} ${
         offset === 1 ? "md:translate-y-12" : offset === 3 ? "md:translate-y-16" : ""
       }`}
     >

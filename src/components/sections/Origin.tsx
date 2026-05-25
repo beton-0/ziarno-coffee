@@ -12,6 +12,9 @@ export function Origin() {
   const [active, setActive] = useState(0);
   const country = origins[active];
 
+  const prev = () => setActive((i) => (i - 1 + origins.length) % origins.length);
+  const next = () => setActive((i) => (i + 1) % origins.length);
+
   return (
     <section id="origin" className="relative bg-ink text-cream py-32 md:py-48 overflow-hidden">
       <div className="absolute inset-0 grain opacity-50" />
@@ -37,14 +40,35 @@ export function Origin() {
         </div>
 
         <div className="grid md:grid-cols-12 gap-12 items-center">
+          {/* Map */}
           <div className="md:col-span-7 relative">
             <FadeIn>
-              <div className="relative aspect-[16/10] w-full">
+              <div className="relative aspect-[4/3] md:aspect-[16/10] w-full">
                 <WorldMap activeIdx={active} onSelect={setActive} />
+              </div>
+
+              {/* Mobile arrows below map */}
+              <div className="flex md:hidden items-center justify-center gap-4 mt-4">
+                <button
+                  onClick={prev}
+                  className="w-10 h-10 rounded-full border border-cream/20 flex items-center justify-center text-cream/60 hover:text-cream hover:border-cream/50 transition-all"
+                >
+                  ←
+                </button>
+                <span className="text-[10px] uppercase tracking-[0.3em] text-cream/40 font-mono">
+                  0{active + 1} / 0{origins.length}
+                </span>
+                <button
+                  onClick={next}
+                  className="w-10 h-10 rounded-full border border-cream/20 flex items-center justify-center text-cream/60 hover:text-cream hover:border-cream/50 transition-all"
+                >
+                  →
+                </button>
               </div>
             </FadeIn>
           </div>
 
+          {/* Country info */}
           <div className="md:col-span-5">
             <AnimatePresence mode="wait">
               <motion.div
@@ -55,10 +79,10 @@ export function Origin() {
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 className="space-y-6"
               >
-                <div className="text-[10px] uppercase tracking-[0.3em] text-cream/40 font-mono">
+                <div className="hidden md:block text-[10px] uppercase tracking-[0.3em] text-cream/40 font-mono">
                   0{active + 1} / 0{origins.length}
                 </div>
-                <h3 className="font-display text-6xl md:text-7xl tracking-tight">{country.country}</h3>
+                <h3 className="font-display text-5xl md:text-7xl tracking-tight">{country.country}</h3>
                 <div className="text-roast-light text-xl font-display italic">{country.region}</div>
                 <div className="h-px w-12 bg-cream/30" />
                 <div className="space-y-4 text-sm">
@@ -76,7 +100,8 @@ export function Origin() {
                   </div>
                 </div>
 
-                <div className="flex gap-3 pt-4">
+                <div className="flex items-center gap-3 pt-4">
+                  {/* Desktop dots */}
                   {origins.map((o, i) => (
                     <button
                       key={o.country}
@@ -87,6 +112,22 @@ export function Origin() {
                       )}
                     />
                   ))}
+
+                  {/* Desktop arrows */}
+                  <div className="hidden md:flex items-center gap-2 ml-auto">
+                    <button
+                      onClick={prev}
+                      className="w-8 h-8 rounded-full border border-cream/20 flex items-center justify-center text-cream/60 hover:text-cream hover:border-cream/50 transition-all text-sm"
+                    >
+                      ←
+                    </button>
+                    <button
+                      onClick={next}
+                      className="w-8 h-8 rounded-full border border-cream/20 flex items-center justify-center text-cream/60 hover:text-cream hover:border-cream/50 transition-all text-sm"
+                    >
+                      →
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             </AnimatePresence>
@@ -105,25 +146,15 @@ function WorldMap({ activeIdx, onSelect }: { activeIdx: number; onSelect: (i: nu
           <circle cx="0.6" cy="0.6" r="0.2" fill="rgba(245,241,234,0.22)" />
         </pattern>
         <clipPath id="continents">
-          {/* North America */}
           <path d="M5,8 L18,6 L26,10 L30,18 L26,24 L20,28 L14,30 L10,26 L6,18 Z" />
-          {/* Central America */}
           <path d="M19,30 L24,32 L26,36 L24,38 L22,38 L20,36 L18,32 Z" />
-          {/* South America */}
           <path d="M26,38 L33,38 L36,42 L38,48 L34,52 L30,52 L26,48 L24,42 Z" />
-          {/* Europe */}
           <path d="M44,8 L54,6 L58,12 L56,18 L48,18 L44,14 Z" />
-          {/* Africa */}
           <path d="M48,20 L60,18 L64,24 L66,32 L62,40 L56,46 L52,46 L48,38 L46,28 Z" />
-          {/* Middle East / Asia (small western) */}
           <path d="M58,18 L70,14 L74,20 L70,24 L62,22 Z" />
-          {/* Asia */}
           <path d="M62,10 L78,6 L88,10 L92,18 L86,24 L78,26 L70,22 L66,18 Z" />
-          {/* India */}
           <path d="M74,24 L80,26 L80,32 L76,32 L74,28 Z" />
-          {/* SE Asia / Indonesia */}
           <path d="M82,28 L88,30 L92,32 L90,36 L86,36 L82,32 Z" />
-          {/* Australia */}
           <path d="M84,42 L94,42 L96,48 L92,50 L86,48 Z" />
         </clipPath>
       </defs>
@@ -138,24 +169,14 @@ function WorldMap({ activeIdx, onSelect }: { activeIdx: number; onSelect: (i: nu
               {isActive && (
                 <>
                   <motion.circle
-                    cx={o.x}
-                    cy={o.y}
-                    r="3"
-                    fill="none"
-                    stroke="#8B4A1D"
-                    strokeWidth="0.3"
+                    cx={o.x} cy={o.y} r="3" fill="none" stroke="#8B4A1D" strokeWidth="0.3"
                     initial={{ scale: 0.5, opacity: 1 }}
                     animate={{ scale: 3, opacity: 0 }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
                     style={{ transformOrigin: `${o.x}px ${o.y}px` }}
                   />
                   <motion.circle
-                    cx={o.x}
-                    cy={o.y}
-                    r="3"
-                    fill="none"
-                    stroke="#8B4A1D"
-                    strokeWidth="0.3"
+                    cx={o.x} cy={o.y} r="3" fill="none" stroke="#8B4A1D" strokeWidth="0.3"
                     initial={{ scale: 0.5, opacity: 1 }}
                     animate={{ scale: 3, opacity: 0 }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeOut", delay: 1 }}
@@ -164,15 +185,13 @@ function WorldMap({ activeIdx, onSelect }: { activeIdx: number; onSelect: (i: nu
                 </>
               )}
               <circle
-                cx={o.x}
-                cy={o.y}
+                cx={o.x} cy={o.y}
                 r={isActive ? "1.2" : "0.7"}
                 fill={isActive ? "#8B4A1D" : "#F5F1EA"}
                 className="transition-all duration-500"
               />
               <text
-                x={o.x + 2}
-                y={o.y + 0.5}
+                x={o.x + 2} y={o.y + 0.5}
                 fontSize="1.6"
                 fill={isActive ? "#F5F1EA" : "rgba(245,241,234,0.4)"}
                 className="font-mono uppercase tracking-wider transition-colors"

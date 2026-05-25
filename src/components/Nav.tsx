@@ -101,6 +101,22 @@ export function Nav() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Mobile back-to-top button */}
+      <AnimatePresence>
+        {scrolled && (
+          <motion.a
+            href="#top"
+            className="fixed bottom-7 right-5 md:hidden z-40 w-10 h-10 rounded-full bg-ink/80 backdrop-blur-md border border-cream/15 flex items-center justify-center text-cream/70 hover:text-cream transition-colors"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.25 }}
+          >
+            ↑
+          </motion.a>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }

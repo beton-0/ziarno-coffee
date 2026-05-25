@@ -60,7 +60,7 @@ function LocationCard({
             <div className="text-[10px] uppercase tracking-[0.3em] text-cream/40 font-mono mb-2">
               0{index + 1}
             </div>
-            <h3 className="font-display text-6xl md:text-7xl tracking-[-0.03em]">{loc.city}</h3>
+            <h3 className="font-display text-[clamp(2.2rem,10vw,4.5rem)] md:text-7xl tracking-[-0.03em]">{loc.city}</h3>
             <div className="text-roast-light group-hover:text-cream/70 transition-colors text-lg font-display italic mt-1">
               {loc.neighborhood}
             </div>
