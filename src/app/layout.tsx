@@ -28,10 +28,19 @@ export const metadata: Metadata = {
   title: "Ziarno. — Specialty coffee · Berlin & Copenhagen",
   description:
     "Small-batch specialty coffee, roasted in Berlin and served in Kreuzberg and Nørrebro. We bring you the morning, the ritual, the craft.",
+  metadataBase: new URL("https://ziarno-coffee.vercel.app"),
   openGraph: {
     title: "Ziarno. — Specialty coffee",
-    description: "Berlin & Copenhagen · single-origin · small-batch",
+    description: "Berlin & Copenhagen · single-origin · small-batch · direct trade",
     type: "website",
+    url: "https://ziarno-coffee.vercel.app",
+    siteName: "Ziarno.",
+    locale: "pl_PL",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ziarno. — Specialty coffee",
+    description: "Berlin & Copenhagen · single-origin · small-batch",
   },
   icons: {
     icon: [
