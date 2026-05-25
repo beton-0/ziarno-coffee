@@ -1,51 +1,43 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/hooks/useLanguage";
 import { dict } from "@/lib/i18n";
-
-const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=2400&q=85&auto=format&fit=crop";
 
 export function Hero() {
   const { lang } = useLang();
   const words = dict.hero.rotating[lang];
   const [idx, setIdx] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const id = setInterval(() => setIdx((i) => (i + 1) % words.length), 2600);
     return () => clearInterval(id);
   }, [words.length]);
 
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.5;
+    }
+  }, []);
+
   return (
     <section id="top" className="relative h-[100svh] w-full overflow-hidden bg-ink text-cream">
       <video
-        key="hero-video"
+        ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
         preload="auto"
-        poster={HERO_IMAGE}
         className="absolute inset-0 w-full h-full object-cover"
+        onLoadedData={() => {
+          if (videoRef.current) videoRef.current.playbackRate = 0.5;
+        }}
       >
         <source src="/hero-coffee.mp4" type="video/mp4" />
       </video>
-
-      <motion.div
-        initial={{ scale: 1.05 }}
-        animate={{ scale: 1.18 }}
-        transition={{ duration: 18, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
-        className="absolute inset-0 -z-0"
-        style={{
-          backgroundImage: `url(${HERO_IMAGE})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
-
-      <CoffeeDrops />
 
       <div className="absolute inset-0 bg-ink/55" />
       <div className="absolute inset-0 bg-gradient-to-b from-ink/40 via-transparent to-ink/80" />
@@ -139,51 +131,3 @@ export function Hero() {
   );
 }
 
-function CoffeeDrops() {
-  const drops = [
-    { x: 18, delay: 0, dur: 4.2, opacity: 0.35 },
-    { x: 32, delay: 1.6, dur: 5.1, opacity: 0.25 },
-    { x: 47, delay: 0.8, dur: 4.8, opacity: 0.4 },
-    { x: 61, delay: 2.4, dur: 5.6, opacity: 0.2 },
-    { x: 75, delay: 1.2, dur: 4.5, opacity: 0.3 },
-    { x: 88, delay: 3.1, dur: 5.3, opacity: 0.22 },
-  ];
-
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      {drops.map((d, i) => (
-        <motion.div
-          key={i}
-          className="absolute top-0 w-[1px] bg-gradient-to-b from-transparent via-roast-light/60 to-transparent"
-          style={{ left: `${d.x}%`, height: "120px", opacity: d.opacity }}
-          initial={{ y: "-20%" }}
-          animate={{ y: "120vh" }}
-          transition={{
-            duration: d.dur,
-            delay: d.delay,
-            repeat: Infinity,
-            ease: "easeIn",
-          }}
-        />
-      ))}
-
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[60%] h-[40%]">
-        <motion.div
-          className="absolute bottom-0 left-1/4 w-px h-32 bg-gradient-to-t from-cream/15 to-transparent blur-sm"
-          animate={{ opacity: [0, 0.5, 0], y: [0, -60, -120], x: [0, 8, -4] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeOut" }}
-        />
-        <motion.div
-          className="absolute bottom-0 left-1/2 w-px h-40 bg-gradient-to-t from-cream/15 to-transparent blur-sm"
-          animate={{ opacity: [0, 0.4, 0], y: [0, -80, -150], x: [0, -10, 4] }}
-          transition={{ duration: 6, delay: 1.2, repeat: Infinity, ease: "easeOut" }}
-        />
-        <motion.div
-          className="absolute bottom-0 left-3/4 w-px h-28 bg-gradient-to-t from-cream/15 to-transparent blur-sm"
-          animate={{ opacity: [0, 0.5, 0], y: [0, -50, -100], x: [0, 6, -2] }}
-          transition={{ duration: 4.5, delay: 2.4, repeat: Infinity, ease: "easeOut" }}
-        />
-      </div>
-    </div>
-  );
-}
