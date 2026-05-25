@@ -19,27 +19,12 @@ export function Hero() {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-
-    const setup = () => {
-      video.playbackRate = 0.5;
-      if (video.currentTime < 2) video.currentTime = 2;
-    };
-
-    // loop back to 2s instead of 0s
-    const handleTimeUpdate = () => {
-      if (video.duration && video.currentTime >= video.duration - 0.3) {
-        video.currentTime = 2;
-      }
-    };
-
-    video.addEventListener("loadedmetadata", setup);
-    video.addEventListener("canplay", setup);
-    video.addEventListener("timeupdate", handleTimeUpdate);
-
+    const setRate = () => { video.playbackRate = 0.5; };
+    video.addEventListener("loadedmetadata", setRate);
+    video.addEventListener("canplay", setRate);
     return () => {
-      video.removeEventListener("loadedmetadata", setup);
-      video.removeEventListener("canplay", setup);
-      video.removeEventListener("timeupdate", handleTimeUpdate);
+      video.removeEventListener("loadedmetadata", setRate);
+      video.removeEventListener("canplay", setRate);
     };
   }, []);
 
