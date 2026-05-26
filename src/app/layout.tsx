@@ -62,6 +62,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1600&q=70&auto=format&fit=crop"
           fetchPriority="high"
         />
+        {/*
+          Synchronously mark <html> so CSS can hide the preloader BEFORE the
+          first paint when the user has already seen it this session (or
+          prefers-reduced-motion). Avoids the brief flash on refresh.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var s=sessionStorage.getItem('ziarno-preload-seen');var r=matchMedia('(prefers-reduced-motion: reduce)').matches;if(s||r){document.documentElement.setAttribute('data-preload-skip','1');}}catch(e){}})();`,
+          }}
+        />
       </head>
       <body className="bg-cream text-ink antialiased">
         <LanguageProvider>{children}</LanguageProvider>

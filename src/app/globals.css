@@ -114,6 +114,15 @@
     text-transform: uppercase;
   }
 
+  /* Hide preloader synchronously when user has already seen it this session
+     (set by inline script in <head> before first paint to avoid a flash). */
+  html[data-preload-skip] [data-preloader] {
+    display: none !important;
+  }
+  html[data-preload-skip] body {
+    overflow: auto !important;
+  }
+
   /* Respect prefers-reduced-motion */
   @media (prefers-reduced-motion: reduce) {
     *,
