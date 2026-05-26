@@ -26,7 +26,7 @@ export function Preloader() {
   useEffect(() => {
     if (skip !== false) return;
     const start = Date.now();
-    const duration = 700;
+    const duration = 1500;
     let raf: number;
 
     const tick = () => {
