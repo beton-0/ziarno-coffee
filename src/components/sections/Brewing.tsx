@@ -20,7 +20,7 @@ export function Brewing() {
             <AnimatedText
               as="h2"
               text={dict.brewing.title[lang]}
-              className="font-display text-[clamp(2rem,5.5vw,5rem)] leading-[1.05] tracking-[-0.03em]"
+              className="font-display text-[clamp(2rem,5.5vw,5rem)] leading-[1.05] tracking-[-0.03em] text-balance"
             />
           </div>
         </div>
@@ -47,7 +47,7 @@ export function Brewing() {
 
                 <div className="p-8 md:p-10 flex flex-col flex-1 justify-between">
                   <div>
-                    <div className="text-[10px] uppercase tracking-[0.3em] text-ink/40 font-mono mb-4">
+                    <div className="text-[10px] uppercase tracking-[0.3em] text-ink/55 font-mono mb-4">
                       0{i + 1} / 04
                     </div>
                     <h3 className="font-display text-5xl md:text-6xl tracking-[-0.03em] mb-4">
@@ -58,21 +58,21 @@ export function Brewing() {
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-4 pt-6 border-t border-ink/15 mt-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-ink/15 mt-8">
                     <div>
-                      <div className="text-[9px] uppercase tracking-[0.2em] text-ink/40 font-mono mb-1">
+                      <div className="text-[9px] uppercase tracking-[0.2em] text-ink/55 font-mono mb-1">
                         {lang === "pl" ? "Czas" : "Time"}
                       </div>
                       <div className="font-display text-2xl text-roast">{method.time}</div>
                     </div>
                     <div>
-                      <div className="text-[9px] uppercase tracking-[0.2em] text-ink/40 font-mono mb-1">
+                      <div className="text-[9px] uppercase tracking-[0.2em] text-ink/55 font-mono mb-1">
                         {lang === "pl" ? "Ciało" : "Body"}
                       </div>
                       <div className="font-display text-base">{method.body[lang]}</div>
                     </div>
                     <div>
-                      <div className="text-[9px] uppercase tracking-[0.2em] text-ink/40 font-mono mb-1">
+                      <div className="text-[9px] uppercase tracking-[0.2em] text-ink/55 font-mono mb-1">
                         {lang === "pl" ? "Nuty" : "Notes"}
                       </div>
                       <div className="text-xs leading-snug">{method.notes[lang]}</div>
@@ -91,7 +91,7 @@ export function Brewing() {
 function BrewIllustration({ name }: { name: string }) {
   if (name === "V60") {
     return (
-      <svg viewBox="0 0 200 200" className="w-full h-full">
+      <svg viewBox="0 0 200 200" className="w-full h-full" aria-hidden="true">
         <motion.g
           animate={{ rotate: [0, 2, 0, -2, 0] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
@@ -118,7 +118,7 @@ function BrewIllustration({ name }: { name: string }) {
   }
   if (name === "Aeropress") {
     return (
-      <svg viewBox="0 0 200 200" className="w-full h-full">
+      <svg viewBox="0 0 200 200" className="w-full h-full" aria-hidden="true">
         <motion.rect
           x="75" y="60" width="50" height="90"
           stroke="#F5F1EA" strokeWidth="1.5" fill="none" rx="2"
@@ -140,7 +140,7 @@ function BrewIllustration({ name }: { name: string }) {
   }
   if (name === "Chemex") {
     return (
-      <svg viewBox="0 0 200 200" className="w-full h-full">
+      <svg viewBox="0 0 200 200" className="w-full h-full" aria-hidden="true">
         <motion.g
           animate={{ rotate: [-1, 1, -1] }}
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}

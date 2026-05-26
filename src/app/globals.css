@@ -69,6 +69,62 @@
   ::-webkit-scrollbar-thumb:hover {
     background: var(--color-roast);
   }
+
+  /* Focus ring — globally, only on keyboard focus */
+  *:focus { outline: none; }
+  *:focus-visible {
+    outline: 2px solid var(--color-roast);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  /* Inverted ring on dark sections */
+  .bg-ink *:focus-visible,
+  section.bg-ink *:focus-visible {
+    outline-color: var(--color-cream);
+  }
+
+  /* Scroll offset under fixed 80px header */
+  section[id] { scroll-margin-top: 80px; }
+
+  /* Cursor pointer for all interactive elements */
+  button:not(:disabled),
+  a[href],
+  [role="button"],
+  [role="tab"] {
+    cursor: pointer;
+  }
+
+  /* Skip-link */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 200;
+  }
+  .skip-link:focus {
+    left: 1rem;
+    top: 1rem;
+    background: var(--color-ink);
+    color: var(--color-cream);
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* Respect prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 @layer utilities {

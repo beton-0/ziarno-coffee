@@ -1,5 +1,6 @@
 import { Preloader } from "@/components/Preloader";
 import { Nav } from "@/components/Nav";
+import { SkipLink } from "@/components/ui/SkipLink";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { Menu } from "@/components/sections/Menu";
@@ -14,9 +15,10 @@ import { Footer } from "@/components/sections/Footer";
 export default function Home() {
   return (
     <>
+      <SkipLink />
       <Preloader />
       <Nav />
-      <main>
+      <main id="main">
         <Hero />
         <About />
         <Menu />

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import { useLang } from "@/hooks/useLanguage";
 import { dict } from "@/lib/i18n";
@@ -9,8 +9,10 @@ import { AnimatedText, FadeIn } from "../ui/AnimatedText";
 export function About() {
   const { lang } = useLang();
   const ref = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
+  const rawY = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
+  const y = reduce ? "0%" : rawY;
 
   return (
     <section ref={ref} className="relative bg-cream text-ink py-32 md:py-48 grain">
@@ -38,14 +40,19 @@ export function About() {
 
             <FadeIn delay={0.4}>
               <div className="grid grid-cols-3 gap-6 pt-8 border-t border-ink/15">
-                {dict.about.stats.map((stat) => (
-                  <div key={stat.value}>
-                    <div className="font-display text-4xl md:text-5xl text-roast tracking-tight">{stat.value}</div>
-                    <div className="text-[10px] uppercase tracking-[0.2em] text-ink/50 font-mono mt-2 leading-tight">
-                      {stat.label[lang]}
+                {dict.about.stats.map((stat, i) => {
+                  const value = typeof stat.value === "string" ? stat.value : stat.value[lang];
+                  return (
+                    <div key={i}>
+                      <div className="font-display text-4xl md:text-5xl text-roast tracking-tight tabular-nums">
+                        {value}
+                      </div>
+                      <div className="text-[10px] uppercase tracking-[0.2em] text-ink/55 font-mono mt-2 leading-tight">
+                        {stat.label[lang]}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </FadeIn>
           </div>
@@ -71,7 +78,7 @@ export function About() {
           </div>
         </motion.div>
 
-        <FadeIn delay={0.3} className="mt-32 flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-[10px] uppercase tracking-[0.3em] text-ink/40 font-mono">
+        <FadeIn delay={0.3} className="mt-32 flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-[10px] uppercase tracking-[0.3em] text-ink/55 font-mono">
           <span>· Direct Trade</span>
           <span>· Small Batch</span>
           <span>· Single Origin</span>

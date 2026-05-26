@@ -28,9 +28,9 @@ export const dict = {
       en: "Ziarno. is more than a coffee shop. It's a shared moment for people looking to slow down in the middle of the city. We roast in small batches, source from single-origin farms, and serve alongside the baristas who brewed it. No rush. No theatrics. Just coffee, time, and you.",
     },
     stats: [
-      { value: "12", label: { pl: "krajow pochodzenia", en: "origin countries" } },
+      { value: "12", label: { pl: "krajów pochodzenia", en: "origin countries" } },
       { value: "2", label: { pl: "lokalizacje", en: "locations" } },
-      { value: "06:30", label: { pl: "otwarcie", en: "we open" } },
+      { value: { pl: "06:30", en: "6:30 AM" }, label: { pl: "otwarcie", en: "we open" } },
     ],
   },
   menu: {
@@ -114,12 +114,13 @@ export const menuData = {
   ],
 } as const;
 
+// coords are [longitude, latitude] in degrees — for proper world-map placement.
 export const origins = [
-  { country: "Ethiopia", region: "Yirgacheffe", notes: { pl: "jasmin, bergamotka, cytryna", en: "jasmine, bergamot, lemon" }, x: 58, y: 36, altitude: "1900-2200m" },
-  { country: "Colombia", region: "Huila", notes: { pl: "karmel, jabłko, czekolada", en: "caramel, apple, chocolate" }, x: 28, y: 38, altitude: "1700-2000m" },
-  { country: "Brazil", region: "Cerrado", notes: { pl: "orzech, nugat, miód", en: "nuts, nougat, honey" }, x: 34, y: 46, altitude: "900-1200m" },
-  { country: "Kenya", region: "Nyeri", notes: { pl: "czarna porzeczka, pomidor", en: "blackcurrant, tomato" }, x: 60, y: 42, altitude: "1700-2000m" },
-  { country: "Guatemala", region: "Huehuetenango", notes: { pl: "kakao, brzoskwinia", en: "cocoa, peach" }, x: 22, y: 32, altitude: "1500-2000m" },
+  { country: "Ethiopia",  region: "Yirgacheffe",   notes: { pl: "jaśmin, bergamotka, cytryna",  en: "jasmine, bergamot, lemon" },   coords: [38.2,  6.16]  as [number, number], altitude: "1900-2200m" },
+  { country: "Colombia",  region: "Huila",         notes: { pl: "karmel, jabłko, czekolada",    en: "caramel, apple, chocolate" },   coords: [-75.4, 2.5]   as [number, number], altitude: "1700-2000m" },
+  { country: "Brazil",    region: "Cerrado",       notes: { pl: "orzech, nugat, miód",          en: "nuts, nougat, honey" },         coords: [-46.6, -15.78] as [number, number], altitude: "900-1200m" },
+  { country: "Kenya",     region: "Nyeri",         notes: { pl: "czarna porzeczka, pomidor",    en: "blackcurrant, tomato" },        coords: [36.95, -0.42] as [number, number], altitude: "1700-2000m" },
+  { country: "Guatemala", region: "Huehuetenango", notes: { pl: "kakao, brzoskwinia",           en: "cocoa, peach" },                coords: [-91.5, 15.32] as [number, number], altitude: "1500-2000m" },
 ];
 
 export const brewingMethods = [

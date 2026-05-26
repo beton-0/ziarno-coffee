@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import { useLang } from "@/hooks/useLanguage";
 import { dict, galleryImages } from "@/lib/i18n";
@@ -21,7 +21,7 @@ export function Gallery() {
             <AnimatedText
               as="h2"
               text={dict.gallery.title[lang]}
-              className="font-display text-[clamp(2.5rem,7vw,7rem)] leading-[1] tracking-[-0.04em]"
+              className="font-display text-[clamp(2.5rem,7vw,7rem)] leading-[1] tracking-[-0.04em] text-balance"
             />
           </div>
         </div>
@@ -38,8 +38,10 @@ export function Gallery() {
 
 function ParallaxImage({ src, alt, tall, index }: { src: string; alt: string; tall: boolean; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+  const rawY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+  const y = reduce ? "0%" : rawY;
   const offset = index % 4;
 
   return (

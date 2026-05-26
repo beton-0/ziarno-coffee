@@ -27,7 +27,7 @@ export function Menu() {
             <AnimatedText
               as="h2"
               text={dict.menu.title[lang]}
-              className="font-display text-[clamp(2.5rem,7vw,7rem)] leading-[1] tracking-[-0.04em]"
+              className="font-display text-[clamp(2.5rem,7vw,7rem)] leading-[1] tracking-[-0.04em] text-balance"
             />
           </div>
           <div className="md:col-span-4 md:pt-6 flex md:justify-end">
@@ -42,13 +42,22 @@ export function Menu() {
         </div>
 
         <FadeIn delay={0.4}>
-          <div className="flex flex-wrap items-center gap-2 mb-12 border-y border-ink/15 py-4">
+          <div
+            role="tablist"
+            aria-label={lang === "pl" ? "Kategorie menu" : "Menu categories"}
+            className="flex flex-wrap items-center gap-2 mb-12 border-y border-ink/15 py-4"
+          >
             {TABS.map((tab) => (
               <button
                 key={tab}
+                role="tab"
+                id={`menu-tab-${tab}`}
+                aria-selected={active === tab}
+                aria-controls={`menu-panel-${tab}`}
+                tabIndex={active === tab ? 0 : -1}
                 onClick={() => setActive(tab)}
                 className={cn(
-                  "relative isolate px-5 py-2 text-xs uppercase tracking-[0.2em] font-mono transition-colors rounded-full",
+                  "relative isolate px-5 py-3 min-h-[44px] text-xs uppercase tracking-[0.2em] font-mono transition-colors rounded-full",
                   active === tab ? "text-cream" : "text-ink/60 hover:text-ink",
                 )}
               >
@@ -62,7 +71,7 @@ export function Menu() {
                 <span className="relative z-10">{dict.menu.categories[tab][lang]}</span>
               </button>
             ))}
-            <span className="ml-auto text-[10px] uppercase tracking-[0.3em] text-ink/40 font-mono hidden md:inline">
+            <span className="ml-auto text-[10px] uppercase tracking-[0.3em] text-ink/55 font-mono hidden md:inline">
               0{TABS.indexOf(active) + 1} / 0{TABS.length}
             </span>
           </div>
@@ -71,6 +80,9 @@ export function Menu() {
         <AnimatePresence mode="wait">
           <motion.div
             key={active}
+            role="tabpanel"
+            id={`menu-panel-${active}`}
+            aria-labelledby={`menu-tab-${active}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}

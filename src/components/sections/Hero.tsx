@@ -13,7 +13,7 @@ export function Hero() {
   const [videoVisible, setVideoVisible] = useState(false);
 
   useEffect(() => {
-    const id = setInterval(() => setIdx((i) => (i + 1) % words.length), 2600);
+    const id = setInterval(() => setIdx((i) => (i + 1) % words.length), 3800);
     return () => clearInterval(id);
   }, [words.length]);
 
@@ -82,7 +82,7 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.8, duration: 1 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
           className="flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-cream/70 font-mono"
         >
           <span className="block w-8 h-px bg-cream/50" />
@@ -94,7 +94,7 @@ export function Hero() {
             <motion.span
               initial={{ y: 60, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 1.8, duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ delay: 0.2, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
               className="block"
             >
               {dict.hero.bring[lang]}
@@ -121,10 +121,13 @@ export function Hero() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 2.2, duration: 1 }}
+            transition={{ delay: 0.55, duration: 0.8 }}
             className="flex flex-col md:flex-row md:items-end md:justify-between gap-8"
           >
-            <p className="max-w-md text-cream/75 leading-relaxed text-lg">
+            <p
+              className="max-w-md text-cream/85 leading-relaxed text-lg"
+              style={{ textShadow: "0 1px 2px rgba(0,0,0,0.4)" }}
+            >
               {lang === "pl"
                 ? "Mała palarnia z dwoma lokalami — w Berlinie i Kopenhadze. Pijemy kawę powoli, jak na to zasługuje."
                 : "A small roastery with two shops — in Berlin and Copenhagen. We drink coffee slowly, the way it deserves."}
@@ -140,7 +143,7 @@ export function Hero() {
               </a>
               <a
                 href="#origin"
-                className="text-sm tracking-wider uppercase text-cream/80 hover:text-cream border-b border-cream/30 hover:border-cream pb-1"
+                className="inline-flex items-center min-h-[44px] text-sm tracking-wider uppercase text-cream/85 hover:text-cream border-b border-cream/30 hover:border-cream py-2"
               >
                 {lang === "pl" ? "Nasze ziarna" : "Our beans"}
               </a>
@@ -151,11 +154,12 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2.4, duration: 1 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-3 text-[10px] uppercase tracking-[0.3em] text-cream/50 font-mono"
+          transition={{ delay: 0.8, duration: 1 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-3 text-[10px] uppercase tracking-[0.3em] text-cream/60 font-mono"
         >
           <span>{dict.hero.scroll[lang]}</span>
           <motion.span
+            aria-hidden="true"
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
             className="block w-px h-12 bg-cream/30"

@@ -15,6 +15,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     if (stored === "pl" || stored === "en") setLangState(stored);
   }, []);
 
+  useEffect(() => {
+    if (typeof document !== "undefined") document.documentElement.lang = lang;
+  }, [lang]);
+
   const setLang = useCallback((l: Lang) => {
     setLangState(l);
     if (typeof window !== "undefined") localStorage.setItem("ziarno-lang", l);

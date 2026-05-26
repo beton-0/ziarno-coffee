@@ -20,7 +20,7 @@ export function Locations() {
             <AnimatedText
               as="h2"
               text={dict.locations.title[lang]}
-              className="font-display text-[clamp(2.5rem,7vw,7rem)] leading-[1] tracking-[-0.04em]"
+              className="font-display text-[clamp(2.5rem,7vw,7rem)] leading-[1] tracking-[-0.04em] text-balance"
             />
           </div>
         </div>
@@ -50,14 +50,14 @@ function LocationCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-10%" }}
       transition={{ duration: 0.9, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative bg-ink text-cream p-8 md:p-12 rounded-sm overflow-hidden cursor-pointer"
+      className="group relative bg-ink text-cream p-8 md:p-12 rounded-sm overflow-hidden"
     >
       <div className="absolute inset-0 bg-roast translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
 
       <div className="relative space-y-8">
         <div className="flex items-start justify-between">
           <div>
-            <div className="text-[10px] uppercase tracking-[0.3em] text-cream/40 font-mono mb-2">
+            <div className="text-[10px] uppercase tracking-[0.3em] text-cream/55 font-mono mb-2">
               0{index + 1}
             </div>
             <h3 className="font-display text-[clamp(2.2rem,10vw,4.5rem)] md:text-7xl tracking-[-0.03em]">{loc.city}</h3>
@@ -65,7 +65,7 @@ function LocationCard({
               {loc.neighborhood}
             </div>
           </div>
-          <div className="w-12 h-12 rounded-full border border-cream/30 flex items-center justify-center group-hover:rotate-45 transition-transform duration-700">
+          <div aria-hidden="true" className="w-12 h-12 rounded-full border border-cream/30 flex items-center justify-center group-hover:rotate-45 transition-transform duration-700">
             <span className="text-xl">↗</span>
           </div>
         </div>
@@ -74,13 +74,21 @@ function LocationCard({
 
         <div className="space-y-4 text-sm">
           <div>
-            <div className="text-[10px] uppercase tracking-[0.2em] text-cream/40 font-mono mb-1">
+            <div className="text-[10px] uppercase tracking-[0.2em] text-cream/55 font-mono mb-1">
               {lang === "pl" ? "Adres" : "Address"}
             </div>
-            <div>{loc.address}</div>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc.address)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 hover:text-roast-light transition-colors"
+            >
+              {loc.address}
+              <span aria-hidden="true" className="text-xs opacity-60">↗</span>
+            </a>
           </div>
           <div>
-            <div className="text-[10px] uppercase tracking-[0.2em] text-cream/40 font-mono mb-1">
+            <div className="text-[10px] uppercase tracking-[0.2em] text-cream/55 font-mono mb-1">
               {lang === "pl" ? "Godziny" : "Hours"}
             </div>
             <div className="space-y-0.5">
@@ -93,14 +101,29 @@ function LocationCard({
           </div>
           <div className="grid grid-cols-2 gap-4 pt-4">
             <div>
-              <div className="text-[10px] uppercase tracking-[0.2em] text-cream/40 font-mono mb-1">
+              <div className="text-[10px] uppercase tracking-[0.2em] text-cream/55 font-mono mb-1">
                 {lang === "pl" ? "Telefon" : "Phone"}
               </div>
-              <div className="font-mono text-xs">{loc.phone}</div>
+              <a
+                href={`tel:${loc.phone.replace(/\s+/g, "")}`}
+                className="font-mono text-xs hover:text-roast-light transition-colors"
+              >
+                {loc.phone}
+              </a>
             </div>
             <div>
-              <div className="text-[10px] uppercase tracking-[0.2em] text-cream/40 font-mono mb-1">GPS</div>
-              <div className="font-mono text-xs">{loc.coords}</div>
+              <div className="text-[10px] uppercase tracking-[0.2em] text-cream/55 font-mono mb-1">
+                {lang === "pl" ? "Mapa" : "Map"}
+              </div>
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc.address)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-xs hover:text-roast-light transition-colors inline-flex items-center gap-1"
+              >
+                {lang === "pl" ? "Otwórz" : "Open"}
+                <span aria-hidden="true" className="opacity-60">↗</span>
+              </a>
             </div>
           </div>
         </div>
@@ -116,7 +139,7 @@ function LocationCard({
 function MapIllustration({ city }: { city: string }) {
   const isBerlin = city === "Berlin";
   return (
-    <svg viewBox="0 0 400 200" className="w-full h-full">
+    <svg viewBox="0 0 400 200" className="w-full h-full" aria-hidden="true">
       <defs>
         <pattern id={`grid-${city}`} x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
           <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(245,241,234,0.08)" strokeWidth="0.5" />

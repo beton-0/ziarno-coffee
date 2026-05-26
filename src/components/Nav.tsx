@@ -48,7 +48,7 @@ export function Nav() {
       <motion.header
         initial={{ y: -40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 1, delay: 1.8, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
           scrolled ? "bg-cream/85 backdrop-blur-md border-b border-ink/8" : "bg-transparent",
@@ -74,13 +74,13 @@ export function Nav() {
             <a
               href="#contact"
               className={cn(
-                "hidden md:inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-mono px-4 py-2 rounded-full border transition-all duration-500",
+                "hidden md:inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-mono px-4 py-3 min-h-[44px] rounded-full border transition-all duration-500",
                 scrolled
                   ? "border-ink text-ink hover:bg-ink hover:text-cream"
                   : "border-cream/30 text-cream hover:bg-cream hover:text-ink hover:border-cream",
               )}
             >
-              {lang === "pl" ? "Rezerwacja" : "Reserve"}
+              {lang === "pl" ? "Kontakt" : "Contact"}
             </a>
           </div>
         </nav>

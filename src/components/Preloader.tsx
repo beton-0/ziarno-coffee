@@ -4,13 +4,29 @@ import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export function Preloader() {
+  // Show preloader only on first visit per session — repeat visitors skip it.
+  const [skip, setSkip] = useState<boolean | null>(null);
   const [done, setDone] = useState(false);
   const [progress, setProgress] = useState(0);
   const controls = useAnimation();
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    const seen = sessionStorage.getItem("ziarno-preload-seen");
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (seen || prefersReduced) {
+      setSkip(true);
+      setDone(true);
+    } else {
+      setSkip(false);
+      sessionStorage.setItem("ziarno-preload-seen", "1");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (skip !== false) return;
     const start = Date.now();
-    const duration = 1200;
+    const duration = 700;
     let raf: number;
 
     const tick = () => {
@@ -18,20 +34,23 @@ export function Preloader() {
       const p = Math.min(elapsed / duration, 1);
       setProgress(p);
       if (p < 1) raf = requestAnimationFrame(tick);
-      else setTimeout(() => setDone(true), 200);
+      else setTimeout(() => setDone(true), 150);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [skip]);
 
   useEffect(() => {
     if (done) {
       window.scrollTo({ top: 0, behavior: "instant" });
       document.body.style.overflow = "";
-    } else {
+    } else if (skip === false) {
       document.body.style.overflow = "hidden";
     }
-  }, [done]);
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [done, skip]);
 
   // cup dimensions
   const cupTop = 52;
@@ -39,6 +58,10 @@ export function Preloader() {
   const cupH = cupBottom - cupTop; // 56
   const fillH = progress * cupH * 0.82;
   const fillY = cupBottom - fillH;
+
+  // If we already determined we should skip (seen this session OR reduced motion),
+  // don't render anything. Avoids a flash of the preloader.
+  if (skip === true) return null;
 
   return (
     <AnimatePresence>
@@ -186,7 +209,7 @@ export function Preloader() {
               </div>
 
               <motion.div
-                className="text-[10px] uppercase tracking-[0.3em] text-cream/40 font-mono"
+                className="text-[10px] uppercase tracking-[0.3em] text-cream/55 font-mono"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6 }}

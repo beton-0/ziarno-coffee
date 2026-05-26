@@ -45,7 +45,8 @@ export function Testimonials() {
 
         <div className="relative max-w-5xl">
           <svg
-            className="absolute -top-12 -left-4 w-24 h-24 text-roast-light opacity-40"
+            aria-hidden="true"
+            className="absolute -top-8 -left-2 w-16 h-16 text-roast-light opacity-40"
             viewBox="0 0 32 32"
             fill="currentColor"
           >
@@ -77,32 +78,38 @@ export function Testimonials() {
             </motion.blockquote>
           </AnimatePresence>
 
-          <div className="mt-16 flex items-center gap-3">
+          <div className="mt-16 flex items-center gap-1">
             {testimonials.map((_, i) => (
               <button
                 key={i}
                 onClick={() => { setManual(true); setIdx(i); }}
-                className={`h-1 transition-all duration-500 ${
-                  i === idx ? "w-12 bg-roast-light" : "w-6 bg-cream/15 hover:bg-cream/30"
-                }`}
-              />
+                aria-label={`Opinia ${i + 1}${i === idx ? " (aktywna)" : ""}`}
+                aria-current={i === idx}
+                className="p-3 -m-1 group"
+              >
+                <span
+                  className={`block h-1 transition-all duration-500 ${
+                    i === idx ? "w-12 bg-roast-light" : "w-6 bg-cream/15 group-hover:bg-cream/30"
+                  }`}
+                />
+              </button>
             ))}
 
             <div className="ml-auto flex items-center gap-3">
-              <span className="text-[10px] uppercase tracking-[0.3em] text-cream/40 font-mono hidden md:inline">
+              <span className="text-[10px] uppercase tracking-[0.3em] text-cream/55 font-mono hidden md:inline">
                 0{idx + 1} / 0{testimonials.length}
               </span>
               <button
                 onClick={prev}
-                aria-label="Previous"
-                className="w-10 h-10 border border-cream/20 hover:border-cream/50 rounded-full flex items-center justify-center text-cream/50 hover:text-cream transition-all hover:bg-cream/5"
+                aria-label={lang === "pl" ? "Poprzednia opinia" : "Previous testimonial"}
+                className="w-11 h-11 border border-cream/20 hover:border-cream/50 rounded-full flex items-center justify-center text-cream/55 hover:text-cream transition-all hover:bg-cream/5"
               >
                 ←
               </button>
               <button
                 onClick={next}
-                aria-label="Next"
-                className="w-10 h-10 border border-cream/20 hover:border-cream/50 rounded-full flex items-center justify-center text-cream/50 hover:text-cream transition-all hover:bg-cream/5"
+                aria-label={lang === "pl" ? "Następna opinia" : "Next testimonial"}
+                className="w-11 h-11 border border-cream/20 hover:border-cream/50 rounded-full flex items-center justify-center text-cream/55 hover:text-cream transition-all hover:bg-cream/5"
               >
                 →
               </button>
@@ -111,7 +118,7 @@ export function Testimonials() {
         </div>
       </div>
 
-      <div className="mt-32 overflow-hidden mask-fade-r">
+      <div aria-hidden="true" className="mt-32 overflow-hidden mask-fade-r">
         <div className="marquee flex gap-16 font-display text-7xl md:text-9xl text-cream/10 whitespace-nowrap">
           {[...Array(2)].map((_, k) => (
             <span key={k} className="flex gap-16 items-center">

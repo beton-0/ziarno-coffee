@@ -18,11 +18,13 @@ export function LangSwitch({ inverted = false }: { inverted?: boolean }) {
           )}
           <button
             onClick={() => setLang(l)}
+            aria-label={l === "pl" ? "Polski" : "English"}
+            aria-pressed={lang === l}
             className={cn(
-              "relative px-1.5 py-1 transition-colors",
+              "relative px-3.5 py-3 -my-1 min-w-[44px] min-h-[44px] inline-flex items-center justify-center transition-colors",
               lang === l
                 ? inverted ? "text-cream" : "text-ink"
-                : inverted ? "text-cream/50" : "text-ink/50",
+                : inverted ? "text-cream/50 hover:text-cream/80" : "text-ink/50 hover:text-ink/80",
             )}
           >
             {l.toUpperCase()}

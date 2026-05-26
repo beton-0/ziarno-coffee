@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useState } from "react";
+import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 import { useLang } from "@/hooks/useLanguage";
 import { dict, origins } from "@/lib/i18n";
 import { AnimatedText, FadeIn } from "../ui/AnimatedText";
@@ -51,16 +52,18 @@ export function Origin() {
               <div className="flex md:hidden items-center justify-center gap-4 mt-4">
                 <button
                   onClick={prev}
-                  className="w-10 h-10 rounded-full border border-cream/20 flex items-center justify-center text-cream/60 hover:text-cream hover:border-cream/50 transition-all"
+                  aria-label={lang === "pl" ? "Poprzedni kraj" : "Previous country"}
+                  className="w-12 h-12 rounded-full border border-cream/20 flex items-center justify-center text-cream/60 hover:text-cream hover:border-cream/50 transition-all"
                 >
                   ←
                 </button>
-                <span className="text-[10px] uppercase tracking-[0.3em] text-cream/40 font-mono">
+                <span className="text-[10px] uppercase tracking-[0.3em] text-cream/55 font-mono">
                   0{active + 1} / 0{origins.length}
                 </span>
                 <button
                   onClick={next}
-                  className="w-10 h-10 rounded-full border border-cream/20 flex items-center justify-center text-cream/60 hover:text-cream hover:border-cream/50 transition-all"
+                  aria-label={lang === "pl" ? "Następny kraj" : "Next country"}
+                  className="w-12 h-12 rounded-full border border-cream/20 flex items-center justify-center text-cream/60 hover:text-cream hover:border-cream/50 transition-all"
                 >
                   →
                 </button>
@@ -79,7 +82,7 @@ export function Origin() {
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 className="space-y-6"
               >
-                <div className="hidden md:block text-[10px] uppercase tracking-[0.3em] text-cream/40 font-mono">
+                <div className="hidden md:block text-[10px] uppercase tracking-[0.3em] text-cream/55 font-mono">
                   0{active + 1} / 0{origins.length}
                 </div>
                 <h3 className="font-display text-5xl md:text-7xl tracking-tight">{country.country}</h3>
@@ -100,30 +103,38 @@ export function Origin() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 pt-4">
+                <div className="flex items-center gap-1 pt-4">
                   {/* Desktop dots */}
                   {origins.map((o, i) => (
                     <button
                       key={o.country}
                       onClick={() => setActive(i)}
-                      className={cn(
-                        "h-1 transition-all duration-500",
-                        i === active ? "w-12 bg-roast-light" : "w-6 bg-cream/20 hover:bg-cream/40",
-                      )}
-                    />
+                      aria-label={`${o.country}${i === active ? " (aktywny)" : ""}`}
+                      aria-current={i === active}
+                      className="p-3 -m-1 group"
+                    >
+                      <span
+                        className={cn(
+                          "block h-1 transition-all duration-500",
+                          i === active ? "w-12 bg-roast-light" : "w-6 bg-cream/20 group-hover:bg-cream/40",
+                        )}
+                      />
+                    </button>
                   ))}
 
                   {/* Desktop arrows */}
                   <div className="hidden md:flex items-center gap-2 ml-auto">
                     <button
                       onClick={prev}
-                      className="w-8 h-8 rounded-full border border-cream/20 flex items-center justify-center text-cream/60 hover:text-cream hover:border-cream/50 transition-all text-sm"
+                      aria-label={lang === "pl" ? "Poprzedni kraj" : "Previous country"}
+                      className="w-11 h-11 rounded-full border border-cream/20 flex items-center justify-center text-cream/60 hover:text-cream hover:border-cream/50 transition-all text-sm"
                     >
                       ←
                     </button>
                     <button
                       onClick={next}
-                      className="w-8 h-8 rounded-full border border-cream/20 flex items-center justify-center text-cream/60 hover:text-cream hover:border-cream/50 transition-all text-sm"
+                      aria-label={lang === "pl" ? "Następny kraj" : "Next country"}
+                      className="w-11 h-11 rounded-full border border-cream/20 flex items-center justify-center text-cream/60 hover:text-cream hover:border-cream/50 transition-all text-sm"
                     >
                       →
                     </button>
@@ -138,70 +149,107 @@ export function Origin() {
   );
 }
 
+// Lightweight real-world map using react-simple-maps + cached TopoJSON.
+// Equator-shifted Equal-Earth projection cropped to the coffee belt.
+const GEO_URL =
+  "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+
 function WorldMap({ activeIdx, onSelect }: { activeIdx: number; onSelect: (i: number) => void }) {
+  const reduce = useReducedMotion();
   return (
-    <svg viewBox="0 0 100 56" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
-      <defs>
-        <pattern id="dots" x="0" y="0" width="1.2" height="1.2" patternUnits="userSpaceOnUse">
-          <circle cx="0.6" cy="0.6" r="0.2" fill="rgba(245,241,234,0.22)" />
-        </pattern>
-        <clipPath id="continents">
-          <path d="M5,8 L18,6 L26,10 L30,18 L26,24 L20,28 L14,30 L10,26 L6,18 Z" />
-          <path d="M19,30 L24,32 L26,36 L24,38 L22,38 L20,36 L18,32 Z" />
-          <path d="M26,38 L33,38 L36,42 L38,48 L34,52 L30,52 L26,48 L24,42 Z" />
-          <path d="M44,8 L54,6 L58,12 L56,18 L48,18 L44,14 Z" />
-          <path d="M48,20 L60,18 L64,24 L66,32 L62,40 L56,46 L52,46 L48,38 L46,28 Z" />
-          <path d="M58,18 L70,14 L74,20 L70,24 L62,22 Z" />
-          <path d="M62,10 L78,6 L88,10 L92,18 L86,24 L78,26 L70,22 L66,18 Z" />
-          <path d="M74,24 L80,26 L80,32 L76,32 L74,28 Z" />
-          <path d="M82,28 L88,30 L92,32 L90,36 L86,36 L82,32 Z" />
-          <path d="M84,42 L94,42 L96,48 L92,50 L86,48 Z" />
-        </clipPath>
-      </defs>
+    <div
+      className="w-full h-full"
+      role="img"
+      aria-label="Mapa świata z zaznaczonymi krajami pochodzenia kawy: Etiopia, Kenia, Kolumbia, Brazylia, Gwatemala"
+    >
+      <ComposableMap
+        projection="geoEqualEarth"
+        projectionConfig={{ scale: 170, center: [0, 5] }}
+        width={800}
+        height={420}
+        style={{ width: "100%", height: "100%" }}
+      >
+        <Geographies geography={GEO_URL}>
+          {({ geographies }) =>
+            geographies.map((geo) => (
+              <Geography
+                key={geo.rsmKey}
+                geography={geo}
+                fill="rgba(245,241,234,0.06)"
+                stroke="rgba(245,241,234,0.18)"
+                strokeWidth={0.4}
+                style={{
+                  default: { outline: "none" },
+                  hover: { outline: "none", fill: "rgba(245,241,234,0.08)" },
+                  pressed: { outline: "none" },
+                }}
+              />
+            ))
+          }
+        </Geographies>
 
-      <rect width="100" height="56" fill="url(#dots)" clipPath="url(#continents)" />
-
-      <g>
         {origins.map((o, i) => {
           const isActive = i === activeIdx;
           return (
-            <g key={o.country} className="cursor-pointer" onClick={() => onSelect(i)}>
-              {isActive && (
+            <Marker
+              key={o.country}
+              coordinates={o.coords}
+              onClick={() => onSelect(i)}
+              onKeyDown={(e: React.KeyboardEvent) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onSelect(i);
+                }
+              }}
+              tabIndex={0}
+              role="button"
+              aria-label={`${o.country}, ${o.region}`}
+              aria-pressed={isActive}
+              className="cursor-pointer"
+            >
+              {isActive && !reduce && (
                 <>
                   <motion.circle
-                    cx={o.x} cy={o.y} r="3" fill="none" stroke="#8B4A1D" strokeWidth="0.3"
+                    r={4}
+                    fill="none"
+                    stroke="#8B4A1D"
+                    strokeWidth={0.6}
                     initial={{ scale: 0.5, opacity: 1 }}
-                    animate={{ scale: 3, opacity: 0 }}
+                    animate={{ scale: 3.5, opacity: 0 }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
-                    style={{ transformOrigin: `${o.x}px ${o.y}px` }}
                   />
                   <motion.circle
-                    cx={o.x} cy={o.y} r="3" fill="none" stroke="#8B4A1D" strokeWidth="0.3"
+                    r={4}
+                    fill="none"
+                    stroke="#8B4A1D"
+                    strokeWidth={0.6}
                     initial={{ scale: 0.5, opacity: 1 }}
-                    animate={{ scale: 3, opacity: 0 }}
+                    animate={{ scale: 3.5, opacity: 0 }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeOut", delay: 1 }}
-                    style={{ transformOrigin: `${o.x}px ${o.y}px` }}
                   />
                 </>
               )}
               <circle
-                cx={o.x} cy={o.y}
-                r={isActive ? "1.2" : "0.7"}
+                r={isActive ? 4.5 : 2.5}
                 fill={isActive ? "#8B4A1D" : "#F5F1EA"}
-                className="transition-all duration-500"
+                stroke={isActive ? "#F5F1EA" : "none"}
+                strokeWidth={isActive ? 0.6 : 0}
+                style={{ transition: "all 0.3s ease" }}
               />
               <text
-                x={o.x + 2} y={o.y + 0.5}
-                fontSize="1.6"
-                fill={isActive ? "#F5F1EA" : "rgba(245,241,234,0.4)"}
-                className="font-mono uppercase tracking-wider transition-colors"
+                x={6}
+                y={2}
+                fontSize={isActive ? 10 : 8}
+                fill={isActive ? "#F5F1EA" : "rgba(245,241,234,0.55)"}
+                fontFamily="var(--font-mono)"
+                style={{ pointerEvents: "none", textTransform: "uppercase", letterSpacing: "0.05em" }}
               >
                 {o.country}
               </text>
-            </g>
+            </Marker>
           );
         })}
-      </g>
-    </svg>
+      </ComposableMap>
+    </div>
   );
 }

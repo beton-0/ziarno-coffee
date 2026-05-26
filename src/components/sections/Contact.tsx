@@ -38,14 +38,14 @@ export function Contact() {
 
           <div className="md:col-span-5 md:pt-12 space-y-12">
             <FadeIn delay={0.3} className="space-y-2">
-              <div className="text-[10px] uppercase tracking-[0.3em] text-ink/40 font-mono">Email</div>
+              <div className="text-[10px] uppercase tracking-[0.3em] text-ink/55 font-mono">Email</div>
               <a href="mailto:hello@ziarno.coffee" className="text-2xl md:text-3xl font-display hover:text-roast transition-colors">
                 hello@ziarno.coffee
               </a>
             </FadeIn>
 
             <FadeIn delay={0.4} className="space-y-2">
-              <div className="text-[10px] uppercase tracking-[0.3em] text-ink/40 font-mono">
+              <div className="text-[10px] uppercase tracking-[0.3em] text-ink/55 font-mono">
                 {lang === "pl" ? "Rezerwacje" : "Reservations"}
               </div>
               <a href="mailto:reserve@ziarno.coffee" className="text-2xl md:text-3xl font-display hover:text-roast transition-colors">
@@ -54,7 +54,7 @@ export function Contact() {
             </FadeIn>
 
             <FadeIn delay={0.5} className="space-y-2">
-              <div className="text-[10px] uppercase tracking-[0.3em] text-ink/40 font-mono">
+              <div className="text-[10px] uppercase tracking-[0.3em] text-ink/55 font-mono">
                 {lang === "pl" ? "Współpraca" : "Wholesale"}
               </div>
               <a href="mailto:beans@ziarno.coffee" className="text-2xl md:text-3xl font-display hover:text-roast transition-colors">
@@ -63,7 +63,7 @@ export function Contact() {
             </FadeIn>
 
             <FadeIn delay={0.55} className="space-y-2">
-              <div className="text-[10px] uppercase tracking-[0.3em] text-ink/40 font-mono">
+              <div className="text-[10px] uppercase tracking-[0.3em] text-ink/55 font-mono">
                 {lang === "pl" ? "Telefon" : "Phone"}
               </div>
               <a href="tel:+493012345678" className="text-2xl md:text-3xl font-display hover:text-roast transition-colors">

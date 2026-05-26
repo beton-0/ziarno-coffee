@@ -51,7 +51,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${inter.variable} ${mono.variable}`}>
+    <html lang="pl" className={`${fraunces.variable} ${inter.variable} ${mono.variable}`}>
       <head>
         {/* Preconnect to Unsplash CDN so the hero image starts downloading earlier */}
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="" />
