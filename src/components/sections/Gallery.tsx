@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
+import Image from "next/image";
 import { useLang } from "@/hooks/useLanguage";
 import { dict, galleryImages } from "@/lib/i18n";
 import { AnimatedText, FadeIn } from "../ui/AnimatedText";
@@ -55,13 +56,19 @@ function ParallaxImage({ src, alt, tall, index }: { src: string; alt: string; ta
         offset === 1 ? "md:translate-y-12" : offset === 3 ? "md:translate-y-16" : ""
       }`}
     >
-      <motion.img
-        src={src}
-        alt={alt}
-        loading="lazy"
+      <motion.div
         style={{ y }}
-        className="absolute inset-0 w-full h-[115%] object-cover scale-105"
-      />
+        className="absolute inset-0 w-full h-[115%] scale-105"
+      >
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes="(max-width: 768px) 50vw, 25vw"
+          className="object-cover"
+          loading="lazy"
+        />
+      </motion.div>
       <div className="absolute inset-0 bg-gradient-to-t from-ink/30 via-transparent to-transparent opacity-60" />
     </motion.div>
   );

@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
+import Image from "next/image";
 import { useLang } from "@/hooks/useLanguage";
 import { dict } from "@/lib/i18n";
 import { AnimatedText, FadeIn } from "../ui/AnimatedText";
@@ -62,18 +63,22 @@ export function About() {
           style={{ y }}
           className="mt-32 md:mt-48 relative grid md:grid-cols-12 gap-6 items-end"
         >
-          <div className="md:col-span-5 md:col-start-2 aspect-[4/5] overflow-hidden rounded-sm">
-            <img
-              src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=900&q=85"
-              alt="latte art"
-              className="w-full h-full object-cover"
+          <div className="md:col-span-5 md:col-start-2 relative aspect-[4/5] overflow-hidden rounded-sm">
+            <Image
+              src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80&auto=format"
+              alt={lang === "pl" ? "Latte art w filiżance" : "Latte art in a cup"}
+              fill
+              sizes="(max-width: 768px) 100vw, 42vw"
+              className="object-cover"
             />
           </div>
-          <div className="md:col-span-4 md:col-start-8 aspect-[4/5] overflow-hidden rounded-sm">
-            <img
-              src="https://images.unsplash.com/photo-1442550528053-c431ecb55509?w=800&q=85"
-              alt="coffee beans"
-              className="w-full h-full object-cover"
+          <div className="md:col-span-4 md:col-start-8 relative aspect-[4/5] overflow-hidden rounded-sm">
+            <Image
+              src="https://images.unsplash.com/photo-1442550528053-c431ecb55509?w=1200&q=80&auto=format"
+              alt={lang === "pl" ? "Ziarna kawy z bliska" : "Coffee beans close-up"}
+              fill
+              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-cover"
             />
           </div>
         </motion.div>
