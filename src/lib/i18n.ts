@@ -28,7 +28,7 @@ export const dict = {
       en: "Ziarno. is more than a coffee shop. It's a shared moment for people looking to slow down in the middle of the city. We roast in small batches, source from single-origin farms, and serve alongside the baristas who brewed it. No rush. No theatrics. Just coffee, time, and you.",
     },
     stats: [
-      { value: "12", label: { pl: "krajów pochodzenia", en: "origin countries" } },
+      { value: "5", label: { pl: "krajów pochodzenia", en: "origin countries" } },
       { value: "2", label: { pl: "lokalizacje", en: "locations" } },
       { value: { pl: "06:30", en: "6:30 AM" }, label: { pl: "otwarcie", en: "we open" } },
     ],

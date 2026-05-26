@@ -61,10 +61,15 @@ export function Nav() {
             </span>
           </a>
 
-          <ul className="hidden md:flex items-center gap-1 md:justify-self-center">
+          <ul className="hidden md:flex items-center gap-0.5 md:justify-self-center">
             {NAV_ITEMS.map((item) => (
               <li key={item.key}>
-                <NavLink href={item.href} label={dict.nav[item.key as keyof typeof dict.nav][lang as Lang]} inverted={!scrolled} />
+                <NavLink
+                  href={item.href}
+                  label={dict.nav[item.key as keyof typeof dict.nav][lang as Lang]}
+                  inverted={!scrolled}
+                  active={activeSection === item.key}
+                />
               </li>
             ))}
           </ul>
@@ -125,25 +130,38 @@ export function Nav() {
   );
 }
 
-function NavLink({ href, label, inverted }: { href: string; label: string; inverted: boolean }) {
-  const [hover, setHover] = useState(false);
+function NavLink({
+  href,
+  label,
+  inverted,
+  active,
+}: {
+  href: string;
+  label: string;
+  inverted: boolean;
+  active: boolean;
+}) {
+  const activeTextClass = inverted ? "text-ink" : "text-cream";
+  const idleTextClass = inverted ? "text-cream/80 hover:text-cream" : "text-ink/70 hover:text-ink";
+  const pillBg = inverted ? "bg-cream" : "bg-ink";
+
   return (
     <a
       href={href}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      aria-current={active ? "true" : undefined}
       className={cn(
-        "relative px-4 py-2 text-sm tracking-wide transition-colors",
-        inverted ? "text-cream/80 hover:text-cream" : "text-ink/70 hover:text-ink",
+        "relative isolate px-4 py-2.5 min-h-[44px] inline-flex items-center text-sm tracking-wide rounded-full transition-colors",
+        active ? activeTextClass : idleTextClass,
       )}
     >
+      {active && (
+        <motion.span
+          layoutId="nav-pill"
+          className={cn("absolute inset-0 rounded-full -z-10", pillBg)}
+          transition={{ type: "spring", stiffness: 380, damping: 32 }}
+        />
+      )}
       <span className="relative z-10">{label}</span>
-      <motion.span
-        className={cn("absolute left-4 right-4 bottom-1 h-px origin-left", inverted ? "bg-cream" : "bg-roast")}
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: hover ? 1 : 0 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      />
     </a>
   );
 }

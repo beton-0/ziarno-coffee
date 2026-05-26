@@ -24,7 +24,10 @@ export function AnimatedText({ text, className, as = "h2", delay = 0, stagger = 
       className={cn(className)}
     >
       {words.map((word, i) => (
-        <span key={i} className="inline-block overflow-hidden align-bottom mr-[0.25em] last:mr-0">
+        <span
+          key={i}
+          className="inline-block overflow-hidden align-bottom mr-[0.25em] last:mr-0 pb-[0.18em] -mb-[0.18em]"
+        >
           <motion.span
             className="inline-block"
             variants={{

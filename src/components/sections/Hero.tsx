@@ -90,17 +90,17 @@ export function Hero() {
         </motion.div>
 
         <div className="flex flex-col gap-8">
-          <h1 className="font-display text-[clamp(3rem,11vw,12rem)] leading-[0.95] tracking-[-0.04em] text-balance">
+          <h1 className="font-display text-[clamp(3rem,11vw,12rem)] leading-[1.02] tracking-[-0.04em] text-balance">
             <motion.span
               initial={{ y: 60, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="block"
+              className="block pb-[0.05em]"
             >
               {dict.hero.bring[lang]}
             </motion.span>
 
-            <span className="relative block h-[1.05em] overflow-hidden">
+            <span className="relative block h-[1.3em] overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.span
                   key={words[idx]}
