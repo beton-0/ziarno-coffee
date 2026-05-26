@@ -20,12 +20,33 @@ export function Hero() {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    const onCanPlay = () => {
-      video.playbackRate = 0.5;
-      video.play().then(() => setVideoVisible(true)).catch(() => {});
+
+    video.playbackRate = 0.5;
+
+    // Reveal the video the moment it actually starts playing — works
+    // whether the autoPlay attribute kicked in or we triggered play()
+    // ourselves. Stays hidden (opacity 0) if Safari Low Power Mode /
+    // strict autoplay policy blocks playback; the image is the fallback.
+    const onPlaying = () => setVideoVisible(true);
+    video.addEventListener("playing", onPlaying);
+
+    const tryPlay = () => {
+      const p = video.play();
+      if (p !== undefined) p.catch(() => {});
     };
-    video.addEventListener("canplay", onCanPlay);
-    return () => video.removeEventListener("canplay", onCanPlay);
+
+    // If the video is already ready when this effect runs (e.g. coming
+    // back from bfcache), canplay won't fire again — kick play() now.
+    if (video.readyState >= 2) {
+      tryPlay();
+    } else {
+      video.addEventListener("canplay", tryPlay, { once: true });
+    }
+
+    return () => {
+      video.removeEventListener("playing", onPlaying);
+      video.removeEventListener("canplay", tryPlay);
+    };
   }, []);
 
   return (
@@ -42,6 +63,7 @@ export function Hero() {
       {/* Video — desktop only, fades in when ready */}
       <video
         ref={videoRef}
+        autoPlay
         muted
         loop
         playsInline
