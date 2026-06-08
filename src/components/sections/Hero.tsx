@@ -75,7 +75,7 @@ export function Hero() {
         poster="/hero-coffee-poster.jpg"
         aria-hidden="true"
         tabIndex={-1}
-        className="hero-video absolute inset-0 w-full h-full object-cover hidden md:block transition-opacity duration-[1500ms] pointer-events-none"
+        className="hero-video absolute inset-0 w-full h-full object-cover hidden md:block pointer-events-none"
         style={{ opacity: videoVisible ? 1 : 0 }}
       >
         <source src="/hero-coffee.mp4" type="video/mp4" />
