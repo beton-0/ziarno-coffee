@@ -19,11 +19,7 @@ export function Menu() {
     <section id="menu" className="relative bg-cream-50 text-ink py-32 md:py-48 grain">
       <div className="mx-auto max-w-[1600px] px-6 md:px-10">
         <div className="grid md:grid-cols-12 gap-12 mb-16">
-          <div className="md:col-span-8 space-y-8">
-            <FadeIn className="flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-ink/50 font-mono">
-              <span className="block w-8 h-px bg-ink/30" />
-              {dict.menu.eyebrow[lang]}
-            </FadeIn>
+          <div className="md:col-span-8">
             <AnimatedText
               as="h2"
               text={dict.menu.title[lang]}

@@ -22,11 +22,7 @@ export function Origin() {
 
       <div className="relative mx-auto max-w-[1600px] px-6 md:px-10">
         <div className="grid md:grid-cols-12 gap-12 mb-20">
-          <div className="md:col-span-8 space-y-8">
-            <FadeIn className="flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-cream/50 font-mono">
-              <span className="block w-8 h-px bg-cream/30" />
-              {dict.origin.eyebrow[lang]}
-            </FadeIn>
+          <div className="md:col-span-8">
             <AnimatedText
               as="h2"
               text={dict.origin.title[lang]}

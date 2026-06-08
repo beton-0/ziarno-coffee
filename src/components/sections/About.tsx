@@ -18,11 +18,6 @@ export function About() {
   return (
     <section ref={ref} className="relative bg-cream text-ink py-32 md:py-48 grain">
       <div className="mx-auto max-w-[1600px] px-6 md:px-10">
-        <FadeIn className="flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-ink/50 font-mono mb-16">
-          <span className="block w-8 h-px bg-ink/30" />
-          {dict.about.eyebrow[lang]}
-        </FadeIn>
-
         <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-start">
           <div className="md:col-span-7">
             <AnimatedText

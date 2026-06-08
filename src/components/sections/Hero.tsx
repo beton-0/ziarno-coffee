@@ -85,17 +85,7 @@ export function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-ink/40 via-transparent to-ink/80" />
       <div className="absolute inset-0 grain" />
 
-      <div className="relative h-full mx-auto max-w-[1600px] px-6 md:px-10 flex flex-col justify-between pt-32 pb-24 md:pb-12">
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-          className="flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-cream/70 font-mono"
-        >
-          <span className="block w-8 h-px bg-cream/50" />
-          {dict.hero.eyebrow[lang]}
-        </motion.div>
-
+      <div className="relative h-full mx-auto max-w-[1600px] px-6 md:px-10 flex flex-col justify-end pt-32 pb-24 md:pb-12">
         <div className="flex flex-col gap-8">
           <h1 className="font-display text-[clamp(3rem,11vw,12rem)] leading-[1.02] tracking-[-0.04em] text-balance">
             <motion.span

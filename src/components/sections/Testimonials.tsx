@@ -38,11 +38,6 @@ export function Testimonials() {
   return (
     <section className="relative bg-ink text-cream py-32 md:py-48 overflow-hidden grain">
       <div className="mx-auto max-w-[1600px] px-6 md:px-10">
-        <FadeIn className="flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-cream/50 font-mono mb-16">
-          <span className="block w-8 h-px bg-cream/30" />
-          {dict.testimonials.eyebrow[lang]}
-        </FadeIn>
-
         <div className="relative max-w-5xl">
           <svg
             aria-hidden="true"
