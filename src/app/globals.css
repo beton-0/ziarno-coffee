@@ -114,6 +114,21 @@
     text-transform: uppercase;
   }
 
+  /* Kill Safari's native play-button overlay on the decorative hero video.
+     When Low Power Mode blocks autoplay, Safari draws a big circle play
+     icon in the middle of <video>. We can't actually play in LPM, so we
+     suppress the overlay and let the poster (a frame from the video)
+     stand in. */
+  .hero-video::-webkit-media-controls,
+  .hero-video::-webkit-media-controls-overlay-play-button,
+  .hero-video::-webkit-media-controls-start-playback-button,
+  .hero-video::-webkit-media-controls-panel {
+    display: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    opacity: 0 !important;
+  }
+
   /* Hide preloader synchronously when user has already seen it this session
      (set by inline script in <head> before first paint to avoid a flash). */
   html[data-preload-skip] [data-preloader] {

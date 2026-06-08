@@ -11,10 +11,6 @@ export function Hero() {
   const [idx, setIdx] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoVisible, setVideoVisible] = useState(false);
-  // Hide the <video> entirely if autoplay is blocked (Safari Low Power Mode,
-  // strict autoplay policy, etc.) so the native play-button overlay doesn't
-  // appear over our background image — the image already acts as a fallback.
-  const [autoplayBlocked, setAutoplayBlocked] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => setIdx((i) => (i + 1) % words.length), 3800);
@@ -25,34 +21,20 @@ export function Hero() {
     const video = videoRef.current;
     if (!video) return;
 
-    // Respect prefers-reduced-motion — don't play the looping background video.
-    if (
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      setAutoplayBlocked(true);
-      return;
-    }
-
     video.playbackRate = 0.5;
 
     // Reveal the video the moment it actually starts playing — works
     // whether the autoPlay attribute kicked in or we triggered play()
     // ourselves. Stays hidden (opacity 0) if Safari Low Power Mode /
-    // strict autoplay policy blocks playback; the image is the fallback.
+    // strict autoplay policy blocks playback — the poster frame
+    // (a still extracted from the video itself) stays as the fallback,
+    // so visually it's indistinguishable from a paused frame.
     const onPlaying = () => setVideoVisible(true);
     video.addEventListener("playing", onPlaying);
 
     const tryPlay = () => {
       const p = video.play();
-      if (p !== undefined) {
-        p.catch(() => {
-          // Autoplay was blocked (Low Power Mode, autoplay policy, etc.).
-          // Hide the video element so Safari doesn't render its native
-          // play-button overlay on top of our hero background image.
-          setAutoplayBlocked(true);
-        });
-      }
+      if (p !== undefined) p.catch(() => {});
     };
 
     // If the video is already ready when this effect runs (e.g. coming
@@ -71,18 +53,18 @@ export function Hero() {
 
   return (
     <section id="top" className="relative h-[100svh] w-full overflow-hidden bg-ink text-cream">
-      {/* Background image — always visible, acts as fallback under video */}
+      {/* Background image — a still frame extracted from the hero video.
+          When autoplay works the video fades in over this; when Safari
+          blocks autoplay (Low Power Mode, etc.) the still stays and is
+          visually indistinguishable from a paused frame. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url(https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1600&q=70&auto=format&fit=crop)",
-        }}
+        style={{ backgroundImage: "url(/hero-coffee-poster.jpg)" }}
       />
 
-      {/* Video — desktop only, fades in when ready. Hidden completely
-          when autoplay is blocked so Safari's native play overlay
-          doesn't appear over the background image fallback. */}
+      {/* Video — desktop only, fades in when ready. `poster` matches the
+          background image so Safari's blocked-autoplay state shows the
+          same still. `pointer-events-none` so the overlays catch clicks. */}
       <video
         ref={videoRef}
         autoPlay
@@ -90,13 +72,11 @@ export function Hero() {
         loop
         playsInline
         preload="auto"
+        poster="/hero-coffee-poster.jpg"
         aria-hidden="true"
         tabIndex={-1}
-        className="absolute inset-0 w-full h-full object-cover hidden md:block transition-opacity duration-[1500ms] pointer-events-none"
-        style={{
-          opacity: videoVisible ? 1 : 0,
-          visibility: autoplayBlocked ? "hidden" : "visible",
-        }}
+        className="hero-video absolute inset-0 w-full h-full object-cover hidden md:block transition-opacity duration-[1500ms] pointer-events-none"
+        style={{ opacity: videoVisible ? 1 : 0 }}
       >
         <source src="/hero-coffee.mp4" type="video/mp4" />
       </video>

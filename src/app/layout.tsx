@@ -53,13 +53,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pl" className={`${fraunces.variable} ${inter.variable} ${mono.variable}`}>
       <head>
-        {/* Preconnect to Unsplash CDN so the hero image starts downloading earlier */}
+        {/* Preconnect to Unsplash CDN so About / Gallery images start downloading earlier */}
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="" />
-        {/* Preload the hero background image — it's the LCP candidate */}
+        {/* Preload the hero poster — it's the LCP candidate (and the video poster fallback) */}
         <link
           rel="preload"
           as="image"
-          href="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1600&q=70&auto=format&fit=crop"
+          href="/hero-coffee-poster.jpg"
           fetchPriority="high"
         />
         {/*
