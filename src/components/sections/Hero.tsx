@@ -11,6 +11,10 @@ export function Hero() {
   const [idx, setIdx] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoVisible, setVideoVisible] = useState(false);
+  // Hide the <video> entirely if autoplay is blocked (Safari Low Power Mode,
+  // strict autoplay policy, etc.) so the native play-button overlay doesn't
+  // appear over our background image — the image already acts as a fallback.
+  const [autoplayBlocked, setAutoplayBlocked] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => setIdx((i) => (i + 1) % words.length), 3800);
@@ -20,6 +24,15 @@ export function Hero() {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+
+    // Respect prefers-reduced-motion — don't play the looping background video.
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      setAutoplayBlocked(true);
+      return;
+    }
 
     video.playbackRate = 0.5;
 
@@ -32,7 +45,14 @@ export function Hero() {
 
     const tryPlay = () => {
       const p = video.play();
-      if (p !== undefined) p.catch(() => {});
+      if (p !== undefined) {
+        p.catch(() => {
+          // Autoplay was blocked (Low Power Mode, autoplay policy, etc.).
+          // Hide the video element so Safari doesn't render its native
+          // play-button overlay on top of our hero background image.
+          setAutoplayBlocked(true);
+        });
+      }
     };
 
     // If the video is already ready when this effect runs (e.g. coming
@@ -60,7 +80,9 @@ export function Hero() {
         }}
       />
 
-      {/* Video — desktop only, fades in when ready */}
+      {/* Video — desktop only, fades in when ready. Hidden completely
+          when autoplay is blocked so Safari's native play overlay
+          doesn't appear over the background image fallback. */}
       <video
         ref={videoRef}
         autoPlay
@@ -68,8 +90,13 @@ export function Hero() {
         loop
         playsInline
         preload="auto"
-        className="absolute inset-0 w-full h-full object-cover hidden md:block transition-opacity duration-[1500ms]"
-        style={{ opacity: videoVisible ? 1 : 0 }}
+        aria-hidden="true"
+        tabIndex={-1}
+        className="absolute inset-0 w-full h-full object-cover hidden md:block transition-opacity duration-[1500ms] pointer-events-none"
+        style={{
+          opacity: videoVisible ? 1 : 0,
+          visibility: autoplayBlocked ? "hidden" : "visible",
+        }}
       >
         <source src="/hero-coffee.mp4" type="video/mp4" />
       </video>
