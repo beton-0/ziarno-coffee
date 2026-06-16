@@ -36,11 +36,20 @@ export const metadata: Metadata = {
     url: "https://ziarno-coffee.vercel.app",
     siteName: "Ziarno.",
     locale: "pl_PL",
+    images: [
+      {
+        url: "/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Ziarno. — Specialty coffee · Berlin & Copenhagen",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Ziarno. — Specialty coffee",
     description: "Berlin & Copenhagen · single-origin · small-batch",
+    images: ["/og.jpg"],
   },
   icons: {
     icon: [
